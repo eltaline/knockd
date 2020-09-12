@@ -27,8 +27,8 @@ Configuration
 Port knocking clients
 --------
 
-Windows: <a href="https://www.microsoft.com/en-us/download/confirmation.aspx?id=24009">PortQRY</a>
-Linux: ```nmap -sU 47566,7566 1.2.3.4```
+    - Windows: <a href="https://www.microsoft.com/en-us/download/confirmation.aspx?id=24009">PortQRY</a>
+    - Linux: ```nmap -sU 47566,7566 1.2.3.4```
 
 --------
 End
