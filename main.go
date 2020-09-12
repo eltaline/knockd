@@ -81,13 +81,13 @@ func main() {
 
 	kports := fport + "," + sport
 
-	command := exec.Command("iptables", "-X", "KNOCKD")
-	_ = command.Run()
-	command = exec.Command("iptables", "-N", "KNOCKD")
+	command := exec.Command("iptables", "-D", "INPUT", "-j", "KNOCKD")
 	_ = command.Run()
 	command = exec.Command("iptables", "-F", "KNOCKD")
 	_ = command.Run()
-	command = exec.Command("iptables", "-D", "INPUT", "-j", "KNOCKD")
+	command = exec.Command("iptables", "-X", "KNOCKD")
+	_ = command.Run()
+	command = exec.Command("iptables", "-N", "KNOCKD")
 	_ = command.Run()
 	command = exec.Command("iptables", "-A", "INPUT", "-j", "KNOCKD")
 	_ = command.Run()
