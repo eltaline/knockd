@@ -225,24 +225,26 @@ func main() {
 func InterruptHandler() {
 
 	chos := make(chan os.Signal)
-	signal.Notify(chos, os.Interrupt, syscall.SIGTERM|syscall.SIGKILL)
+	signal.Notify(chos, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
 
 		<-chos
 
-		command := exec.Command("iptables", "-F", "KNOCKD")
+		command := exec.Command("iptables", "-D", "INPUT", "-j", "KNOCKD")
 		_ = command.Run()
 
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 
-		command = exec.Command("iptables", "-D", "INPUT", "-j", "KNOCKD")
+		command = exec.Command("iptables", "-F", "KNOCKD")
 		_ = command.Run()
 
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 
 		command = exec.Command("iptables", "-X", "KNOCKD")
 		_ = command.Run()
+
+		time.Sleep(50 * time.Millisecond)
 
 		os.Exit(0)
 
