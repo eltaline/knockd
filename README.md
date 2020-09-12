@@ -12,7 +12,7 @@ Configuration
 
 1. Edit ExecStart= in ```/lib/systemd/system/knockd.service``` file
 
-    - Default settings ```/usr/sbin/knockd --fport=47566 --sport=7566 --tcpports=21,22,25,111 --udpports=111,135,136,137,138,139 --ttl=86400 --timeout=60```
+    - Default settings: ```/usr/sbin/knockd --fport=47566 --sport=7566 --tcpports=21,22,25,111 --udpports=111,135,136,137,138,139 --ttl=86400 --timeout=60```
 
     - fport: first knocking udp port
     - sport: second knocking udp port
