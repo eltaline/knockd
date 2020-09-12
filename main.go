@@ -219,8 +219,6 @@ func main() {
 
 	}
 
-	time.Sleep(1 * time.Second)
-
 }
 
 // InterruptHandler: remove iptables rules after stop knockd
@@ -233,10 +231,16 @@ func InterruptHandler() {
 
 		<-chos
 
-		command := exec.Command("iptables", "-D", "INPUT", "-j", "KNOCKD")
+		command := exec.Command("iptables", "-F", "KNOCKD")
 		_ = command.Run()
-		command = exec.Command("iptables", "-F", "KNOCKD")
+
+		time.Sleep(100 * time.Millisecond)
+
+		command = exec.Command("iptables", "-D", "INPUT", "-j", "KNOCKD")
 		_ = command.Run()
+
+		time.Sleep(100 * time.Millisecond)
+
 		command = exec.Command("iptables", "-X", "KNOCKD")
 		_ = command.Run()
 
