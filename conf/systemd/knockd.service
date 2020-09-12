@@ -1,0 +1,23 @@
+[Unit]
+Description=KnockD Service
+
+[Service]
+Type=simple
+User=root
+Group=root
+PIDFile=/run/knockd/knockd.pid
+RuntimeDirectory=knockd
+TimeoutStopSec=30
+
+ExecStart=/usr/sbin/knockd --fport=47566 --sport=7566 --tcpports=21,22,25,111 --udpports=111,135,136,137,138,139 --ttl=86400 --timeout=60
+ExecStop=/bin/kill -s TERM $MAINPID
+
+Restart=always
+RestartSec=60s
+
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
+Alias=knockd.service

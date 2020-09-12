@@ -1,0 +1,77 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: knockd
+# Required-Start:       $syslog $local_fs $remote_fs $network
+# Required-Stop:        $syslog $local_fs $remote_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description: KnockD Service
+### END INIT INFO
+
+. /lib/lsb/init-functions
+DAEMON="/usr/sbin/knockd"
+DAEMON_OPTS="--fport=47566 --sport=7566 --tcpports=21,22,25,111 --udpports=111,135,136,137,138,139 --ttl=86400 --timeout=60"
+USER="root"
+GROUP="root"
+RUNDIR="/run/knockd"
+PIDFILE=/run/knockd/knockd.pid
+DESC="KnockD Service"
+start() {
+
+	test -d $RUNDIR || install --mode=755 --owner=root --group=root --directory $RUNDIR
+
+	log_daemon_msg "Starting $DESC\n"
+	start-stop-daemon -q -b -u $USER -g $GROUP -p $PIDFILE --start --exec $DAEMON -- $DAEMON_OPTS
+	if [ $? -ne 0 ]; then
+		log_failure_msg "Failed"
+		exit 1
+	fi
+	if [ $? -eq 0 ]; then
+		log_success_msg "KnockD Started"
+	fi
+	exit 0
+
+}
+
+stop() {
+
+	log_daemon_msg "Stopping $DESC\n"
+	start-stop-daemon -q -p $PIDFILE --stop
+	if [ $? -ne 0 ]; then
+		log_failure_msg "Failed"
+		exit 1
+	fi
+	if [ $? -eq 0 ]; then
+		log_success_msg "KnockD Stopped"
+	fi
+
+}
+
+force_reload() {
+
+	stop
+	start
+
+}
+
+case "$1" in
+
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	force-reload)
+		force_reload
+		;;
+	restart)
+		stop
+		start
+		;;
+
+	*)
+		echo "$Usage: $DAEMON {start|stop|force-reload|restart}"
+		exit 2
+
+esac
