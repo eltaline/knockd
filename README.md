@@ -1,6 +1,6 @@
 # KnockD
 
-Port knocking UDP Server
+Port knocking UDP Server (Supported only iptables and ipv4)
 
 Installation
 --------
