@@ -89,7 +89,7 @@ func main() {
 	_ = command.Run()
 	command = exec.Command("iptables", "-D", "INPUT", "-j", "KNOCKD")
 	_ = command.Run()
-	command = exec.Command("iptables", "-I", "INPUT", "-j", "KNOCKD")
+	command = exec.Command("iptables", "-A", "INPUT", "-j", "KNOCKD")
 	_ = command.Run()
 	command = exec.Command("iptables", "-I", "KNOCKD", "-p", "all", "-m", "conntrack", "--ctstate", "ESTABLISHED,RELATED", "-j", "ACCEPT")
 	_ = command.Run()
@@ -100,12 +100,28 @@ func main() {
 
 		command := exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "0.0.0.0/0", "-m", "multiport", "--dports", tcpports, "-j", "DROP")
 		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "127.0.0.0/8", "-m", "multiport", "--dports", tcpports, "-j", "ACCEPT")
+		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "192.168.0.0/16", "-m", "multiport", "--dports", tcpports, "-j", "ACCEPT")
+		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "172.16.0.0/12", "-m", "multiport", "--dports", tcpports, "-j", "ACCEPT")
+		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "10.0.0.0/8", "-m", "multiport", "--dports", tcpports, "-j", "ACCEPT")
+		_ = command.Run()
 
 	}
 
 	if udpports != "" {
 
 		command := exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "0.0.0.0/0", "-m", "multiport", "--dports", udpports, "-j", "DROP")
+		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "127.0.0.0/8", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
+		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "192.168.0.0/16", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
+		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "172.16.0.0/12", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
+		_ = command.Run()
+		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "10.0.0.0/8", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
 		_ = command.Run()
 
 	}
