@@ -1,0 +1,102 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+before:
+  hooks:
+
+env_files:
+  github_token: /root/projects/keys/knockd
+
+builds:
+  -
+    binary: knockd
+    id: knockd
+    ldflags: -s -w
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+      - ppc64
+      - mips64
+    goarm:
+      - 7
+
+release:
+  draft: false
+
+archives:
+  -
+    id: "knockd"
+    builds: ['knockd']
+    format: tar.gz
+    name_template: "{{.ProjectName}}-{{.Version}}-{{.Os}}-{{.Arch}}"
+    files:
+      - LICENSE
+      - NOTICE
+
+nfpms:
+  -
+    id: "knockd"
+    builds: ['knockd']
+    formats:
+      - deb
+      - rpm
+    vendor: "Eltaline"
+    homepage: "https://wzd.dev/"
+    maintainer: "Andrey Kuvshinov <dev@wzd.dev>"
+    description: "Port knocking UDP Server"
+    license: "Apache 2.0"
+    name_template: "{{.ProjectName}}-{{.Version}}-{{.Os}}-{{.Arch}}"
+
+    bindir: /usr/sbin
+
+    dependencies:
+      - systemd
+      - logrotate
+
+    empty_folders:
+      - /etc/knockd
+      - /usr/share/knockd
+
+    files:
+      "conf/systemd/knockd.service": "/lib/systemd/system/knockd.service"
+      "LICENSE": "/usr/share/knockd/LICENSE"
+      "NOTICE": "/usr/share/knockd/NOTICE"
+
+    scripts:
+      postinstall: "scripts/postinstall.sh"
+
+scoop:
+
+  commit_author:
+    name: "Andrey Kuvshinov"
+    email: dev@wzd.dev
+  homepage: "https://wzd.dev/"
+  license: Apache 2.0
+
+brews:
+ -
+   commit_author:
+     name: "Andrey Kuvshinov"
+     email: dev@wzd.dev
+   homepage: "https://wzd.dev/"
+   goarm: 7
+
+snapshot:
+  name_template: "{{.Version}}-master"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - README
+    - OPTIONS
+    - Readme
+    - Options
+    - Image
+    - Script
+    - Docker
+    - Typo
+    - "via upload"
+    - goreleaser
