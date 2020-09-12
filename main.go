@@ -98,8 +98,6 @@ func main() {
 
 	if tcpports != "" {
 
-		command := exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "0.0.0.0/0", "-m", "multiport", "--dports", tcpports, "-j", "DROP")
-		_ = command.Run()
 		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "127.0.0.0/8", "-m", "multiport", "--dports", tcpports, "-j", "ACCEPT")
 		_ = command.Run()
 		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "192.168.0.0/16", "-m", "multiport", "--dports", tcpports, "-j", "ACCEPT")
@@ -108,13 +106,13 @@ func main() {
 		_ = command.Run()
 		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "10.0.0.0/8", "-m", "multiport", "--dports", tcpports, "-j", "ACCEPT")
 		_ = command.Run()
+		command := exec.Command("iptables", "-A", "KNOCKD", "-p", "tcp", "-s", "0.0.0.0/0", "-m", "multiport", "--dports", tcpports, "-j", "DROP")
+		_ = command.Run()
 
 	}
 
 	if udpports != "" {
 
-		command := exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "0.0.0.0/0", "-m", "multiport", "--dports", udpports, "-j", "DROP")
-		_ = command.Run()
 		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "127.0.0.0/8", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
 		_ = command.Run()
 		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "192.168.0.0/16", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
@@ -122,6 +120,8 @@ func main() {
 		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "172.16.0.0/12", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
 		_ = command.Run()
 		command = exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "10.0.0.0/8", "-m", "multiport", "--dports", udpports, "-j", "ACCEPT")
+		_ = command.Run()
+		command := exec.Command("iptables", "-A", "KNOCKD", "-p", "udp", "-s", "0.0.0.0/0", "-m", "multiport", "--dports", udpports, "-j", "DROP")
 		_ = command.Run()
 
 	}
