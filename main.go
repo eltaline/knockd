@@ -219,6 +219,8 @@ func main() {
 
 	}
 
+	time.Sleep(1 * time.Second)
+
 }
 
 // InterruptHandler: remove iptables rules after stop knockd
