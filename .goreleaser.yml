@@ -48,7 +48,7 @@ nfpms:
     maintainer: "Andrey Kuvshinov <syslinux@protonmail.com>"
     description: "Port knocking UDP Server"
     license: "Apache 2.0"
-    name_template: "{{.ProjectName}}-{{.Version}}-{{.Os}}-{{.Arch}}"
+    file_name_template: "{{.ProjectName}}-{{.Version}}-{{.Os}}-{{.Arch}}"
 
     bindir: /usr/sbin
 
@@ -60,10 +60,15 @@ nfpms:
       - /etc/knockd
       - /usr/share/knockd
 
-    files:
-      "conf/systemd/knockd.service": "/lib/systemd/system/knockd.service"
-      "LICENSE": "/usr/share/knockd/LICENSE"
-      "NOTICE": "/usr/share/knockd/NOTICE"
+    contents:
+      - src: "conf/systemd/knockd.service"
+        dst: "/lib/systemd/system/knockd.service"
+
+      - src: "LICENSE"
+        dst: "/usr/share/knockd/LICENSE"
+
+      - src: "NOTICE"
+        dst: "/usr/share/knockd/NOTICE"
 
     scripts:
       postinstall: "scripts/postinstall.sh"
